@@ -1,0 +1,85 @@
+# Copyright 2019 Google, LLC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Build and Deploy to Cloud Run
+
+on:
+    push:
+        branches:
+            - master
+
+env:
+    PROJECT_ID: cousii
+    RUN_REGION: us-central1
+    SERVICE_ACCOUNT: apis-accessor
+    API_SERVICE_NAME: api-prod
+    CREDS_SECRET_NAME: secret_API_PRODUCTION_CREDS
+
+jobs:
+    deploy-app:
+        name: Deploy App
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@master
+            - name: ls
+              run: |
+                  cd ./typescript
+                  echo ${{secrets.APP_ENV_PROD_FILE}} | base64 -d > .env
+                  npm install
+                  CI=false npm run build:prod
+            - name: Deploy to Firebase
+              uses: w9jds/firebase-action@master
+              with:
+                  args: deploy --only hosting
+              env:
+                  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+                  PROJECT_ID: cousii
+                  PROJECT_PATH: ./typescript
+    api-build-deploy:
+        name: API, Build, and Deploy
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@master
+
+            # Setup gcloud CLI
+            - uses: google-github-actions/setup-gcloud@master
+              with:
+                  version: '290.0.1'
+                  service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+                  project_id: cousii
+
+            # Build and push image to Google Container Registry
+            - name: Build
+              run: |-
+                  gcloud builds submit ./api \
+                    --quiet \
+                    --tag "gcr.io/$PROJECT_ID/$API_SERVICE_NAME:$GITHUB_SHA"
+            # Deploy image to Cloud Run
+            - name: Deploy
+              run: |-
+                  gcloud components install beta && gcloud beta run deploy "$API_SERVICE_NAME" \
+                    --quiet \
+                    --service-account "$SERVICE_ACCOUNT" \
+                     --memory "1Gi" \
+                    --region "$RUN_REGION" \
+                    --image "gcr.io/$PROJECT_ID/$API_SERVICE_NAME:$GITHUB_SHA" \
+                    --platform "managed" \
+                    --allow-unauthenticated \
+                    --cpu 1 \
+                    --set-env-vars \
+                     CREDS_SECRET_NAME=$CREDS_SECRET_NAME,GCP_PROJECT_ID=$PROJECT_ID

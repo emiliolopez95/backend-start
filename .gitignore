@@ -1,0 +1,15 @@
+/node_modules
+src/config/.creds.json
+src/config/.creds_prod.json
+src/config/.creds_staging.json
+.env
+.idea
+
+/build
+/dist
+package-lock.json
+gcloud-creds.json
+gcloud-creds-prod.json
+gcloud-creds-staging.json
+yarn.lock
+.creds.json

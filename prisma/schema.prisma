@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
+}
+
+// datasource db {
+//   provider = "mysql"
+//   url = env("DATABASE_URL")
+//   referentialIntegrity = "prisma"
+// }
+
+//USE
+//url                  = env("DATABASE_URL")
+datasource db {
+    provider             = "mysql"
+    url                  = env("PRISMA_DATABASE_URL")
+    shadowDatabaseUrl    = env("PRISMA_SHADOW_DATABASE_URL")
+    referentialIntegrity = "prisma"
+}
+
+model Account {
+    id           Int      @id @default(autoincrement())
+    name         String   @db.VarChar(255)
+    hashedApiKey String?
+    currency     String?
+    timeZone     String?
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    users User[]
+
+    @@map("accounts")
+}
+
+model User {
+    id         Int      @id @default(autoincrement())
+    account    Account  @relation(fields: [accountId], references: [id])
+    accountId  Int
+    firstName  String   @db.VarChar(255)
+    lastName   String   @db.VarChar(255)
+    email      String   @db.VarChar(255)
+    firebaseId String   @db.VarChar(255)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@unique([accountId, email])
+    @@map("users")
+}

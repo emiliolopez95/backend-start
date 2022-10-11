@@ -1,0 +1,13 @@
+run command: npm run dev
+
+#To run on dev:
+run command: npm run dev
+
+#To deploy to staging, run from root of project:
+run command: npm deploy:staging
+
+#To deploy to production, run from root of project:
+run command: npm deploy:production
+
+#If you do a change on schema.prisma
+run command: ./src/deployment/production.sh

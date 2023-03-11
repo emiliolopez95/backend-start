@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE `users` MODIFY `firstName` VARCHAR(255) NULL,
+    MODIFY `lastName` VARCHAR(255) NULL,
+    MODIFY `email` VARCHAR(255) NULL,
+    MODIFY `country` VARCHAR(255) NULL,
+    MODIFY `dob` VARCHAR(255) NULL,
+    MODIFY `gender` VARCHAR(255) NULL;

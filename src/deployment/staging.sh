@@ -1,17 +1,17 @@
 #!/bin/bash
 set -e
-GCP_PROJECT_ID=iclosed
-CLOUD_RUN_SERVICE_NAME=iclosed-api-staging
+GCP_PROJECT_ID=template-365208
+CLOUD_RUN_SERVICE_NAME=template-api-staging
 GCP_REGION=us-central1
-IMAGE_NAME=iclosed-api-staging
-ENVIRONMENT=iclosed-api-staging
+IMAGE_NAME=template-api-staging
+ENVIRONMENT=template-api-staging
 SERVICE_ACCOUNT=apis-accessor
-CREDS_SECRET_NAME=secret_ICLOSED_API_STAGING_CREDS:latest
-PRISMA_DATABASE_URL_SECRET_NAME=secret_ICLOSED_API_STAGING_PRISMA_DATABASE_URL:latest
+CREDS_SECRET_NAME=secret_TEMPLATE_API_PROD_CREDS:latest
+PRISMA_DATABASE_URL_SECRET_NAME=secret_TEMPLATE_API_PROD_PRISMA_DATABASE_URL:latest
 PORT=4000
 
-#echo ${GCP_KEY_FILE_AUTH} | base64 --decode --ignore-garbage > /tmp/gcloud-api.json
-#gcloud auth activate-service-account --key-file=/tmp/gcloud-api.json
+# echo ${GCP_KEY_FILE_AUTH} | base64 --decode --ignore-garbage > /tmp/gcloud-api.json
+# gcloud auth activate-service-account --key-file=/tmp/gcloud-api.json
 gcloud auth activate-service-account --key-file=gcloud-creds.json
 gcloud config set project $GCP_PROJECT_ID
 gcloud config list

@@ -21,31 +21,52 @@ datasource db {
     referentialIntegrity = "prisma"
 }
 
-model Account {
-    id           Int      @id @default(autoincrement())
-    name         String   @db.VarChar(255)
-    hashedApiKey String?
-    currency     String?
-    timeZone     String?
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
+model User {
+    id                   String    @id
+    firstName            String?   @db.VarChar(255)
+    lastName             String?   @db.VarChar(255)
+    email                String?   @db.VarChar(255)
+    dob                  String?   @db.VarChar(255)
+    gender               String?   @db.VarChar(255)
+    country              String?   @db.VarChar(255)
+    createdAt            DateTime  @default(now())
+    lastNotificationSent Int?
+    updatedAt            DateTime  @updatedAt
+    sessions             Session[]
+    subscribed           Boolean   @default(false)
+    subscriptionId       String?
 
-    users User[]
-
-    @@map("accounts")
+    @@map("users")
 }
 
-model User {
-    id         Int      @id @default(autoincrement())
-    account    Account  @relation(fields: [accountId], references: [id])
-    accountId  Int
-    firstName  String   @db.VarChar(255)
-    lastName   String   @db.VarChar(255)
-    email      String   @db.VarChar(255)
-    firebaseId String   @db.VarChar(255)
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+model Session {
+    id           Int       @id @default(autoincrement())
+    user         User      @relation(fields: [userId], references: [id])
+    createdAt    DateTime  @default(now())
+    lastActiveAt DateTime  @default(now())
+    userId       String
+    isActive     Boolean   @default(true)
+    messages     Message[]
 
-    @@unique([accountId, email])
-    @@map("users")
+    @@index([userId])
+    @@map("sessions")
+}
+
+enum MessageRole {
+    user
+    system
+    assistant
+}
+
+model Message {
+    id        Int         @id @default(autoincrement())
+    session   Session     @relation(fields: [sessionId], references: [id])
+    role      MessageRole
+    content   String      @db.VarChar(10000)
+    sessionId Int
+    createdAt DateTime    @default(now())
+    timestamp Int
+
+    @@index([sessionId, createdAt])
+    @@map("messages")
 }

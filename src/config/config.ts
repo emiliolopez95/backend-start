@@ -16,6 +16,10 @@ export interface ICreds {
     PRISMA__SHADOW_DATABASE_URL: string;
     CLIENT_DOMAIN: string;
     BUCKET_NAME: string;
+    OPENAI_API_KEY: string;
+    FB_GRAPH_TOKEN: string;
+    FB_GRAPH_ID: string;
+    AIRTABLE_API_KEY: string;
 }
 export const getCredentials = function (): ICreds {
     let creds: ICreds;
@@ -74,5 +78,9 @@ export const getCredentials = function (): ICreds {
         AURORA_DATABASE_URL: creds.AURORA_DATABASE_URL,
         PRISMA_DATABASE_URL: creds.PRISMA_DATABASE_URL,
         PRISMA__SHADOW_DATABASE_URL: creds.PRISMA__SHADOW_DATABASE_URL,
+        OPENAI_API_KEY: creds.OPENAI_API_KEY,
+        FB_GRAPH_TOKEN: creds.FB_GRAPH_TOKEN,
+        FB_GRAPH_ID: creds.FB_GRAPH_ID,
+        AIRTABLE_API_KEY: creds.AIRTABLE_API_KEY,
     };
 };

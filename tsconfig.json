@@ -2,11 +2,13 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "allowJs": true,
-    "module": "commonjs",
+    "module": "nodenext",
     "moduleResolution": "node",
+    // "module": "commonjs",
+    // "moduleResolution": "node16",
     "pretty": true,
     "sourceMap": true,
-    "target": "es2017",
+    "target": "ES2020", // or higher
     "outDir": "./dist",
     "lib": [
       "es6",
@@ -17,7 +19,6 @@
     "typeRoots" : ["./node_modules/@types", "./src/@types"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": true
   },
   "include": [
     "src/*.ts",
@@ -30,3 +31,16 @@
     "src/**/*.spec.js"
   ]
 }
+
+
+// {
+//   "compilerOptions": {
+//     "target": "ES2018",
+//     "module": "commonjs",
+//     "strict": true,
+//     "esModuleInterop": true,
+//     "outDir": "./dist"
+//   },
+//   "include": ["src/**/*.ts"],
+//   "exclude": ["node_modules"]
+// }

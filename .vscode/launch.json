@@ -1,6 +1,10 @@
 {
     "version": "0.2.0",
     "configurations": [
+      
+      
+
+
       {
         "name": "Api",
         "type": "node",
@@ -15,13 +19,13 @@
         "skipFiles": ["<node_internals>/**", "node_modules/**"]
       },
       {
-        "name": "Setup Db",
+        "name": "Ingest Data",
         "type": "node",
         "request": "launch",
         "runtimeExecutable": "node",
-        "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+        "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only", "--loader", "ts-node-esm"],
   
-        "args": ["src/scripts/setUpDb.ts"],
+        "args": ["src/scripts/ingestData.ts"],
         
         "cwd": "${workspaceRoot}",
         "internalConsoleOptions": "openOnSessionStart",

@@ -258,7 +258,7 @@ async function start({ company, whatsAppId, inputMessage, timestamp }) {
     storeNewMessages.push(newMessage);
     aiMessages.push({ role: newMessage.role, content: newMessage.content });
 
-    let aiNewMessage = await getAIMessage({ messages: aiMessages });
+    let aiNewMessage = await getAIMessage({ messages: aiMessages, model: company.model });
     storeNewMessages.push({
         sessionId: activeSession.id,
         role: 'assistant',
@@ -481,11 +481,12 @@ async function sendMessage({ toNumber, message, company }) {
     }
 }
 
-async function getAIMessage({ messages }) {
+async function getAIMessage({ messages, model = 'gpt-3.5-turbo', temperature = 0 }) {
     try {
         const newMessage = await openai.createChatCompletion({
-            model: 'gpt-3.5-turbo',
+            model: model,
             messages: messages,
+            temperature,
         });
 
         if (newMessage) {

@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
       
       
 
@@ -23,7 +24,7 @@
         "type": "node",
         "request": "launch",
         "runtimeExecutable": "node",
-        "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only", "--loader", "ts-node-esm"],
+        "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
   
         "args": ["src/scripts/ingestData.ts"],
         

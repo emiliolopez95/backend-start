@@ -21,6 +21,7 @@ export interface ICreds {
     PINECONE_CONFIG: any;
     COMPANIES_CREDS: object;
     REDIS_URL: string;
+    RAPIDAPI_API_KEY: string;
 }
 export const getCredentials = function (): ICreds {
     let creds: ICreds;
@@ -84,5 +85,6 @@ export const getCredentials = function (): ICreds {
         PINECONE_CONFIG: creds.PINECONE_CONFIG,
         COMPANIES_CREDS: creds.COMPANIES_CREDS,
         REDIS_URL: creds.REDIS_URL,
+        RAPIDAPI_API_KEY: creds.RAPIDAPI_API_KEY,
     };
 };

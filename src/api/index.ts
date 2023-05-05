@@ -27,6 +27,9 @@ import { Configuration, OpenAIApi } from 'openai';
 import companies from './companies';
 import systemMessages from './systemMessages';
 import { isGeneratorFunction } from 'util/types';
+import urlUtils from '../utils/urlUtils';
+import { scrapeArticleDataPaid } from '../utils/scrapingUtils';
+import { stringSplitter, getAIMessage, getTextSummary } from '../utils/aiUtils';
 
 export const CREDS = getCredentials();
 const base = new Airtable({ apiKey: CREDS.AIRTABLE_API_KEY }).base('appt0uaa6bw7gg6OP');
@@ -258,7 +261,36 @@ async function start({ company, whatsAppId, inputMessage, timestamp }) {
     storeNewMessages.push(newMessage);
     aiMessages.push({ role: newMessage.role, content: newMessage.content });
 
-    let aiNewMessage = await getAIMessage({ messages: aiMessages, model: company.model });
+    let aiNewMessage = '';
+    let messageHasUrl = urlUtils.getUrlsFromString(inputMessage).length > 0;
+
+    if (!messageHasUrl) {
+        aiNewMessage = await getAIMessage({ messages: aiMessages, model: company.model });
+    } else {
+        let url = urlUtils.getUrlsFromString(inputMessage)[0];
+
+        let article: any = await scrapeArticleDataPaid(url);
+
+        console.log(article);
+
+        if (article.is_article && article.text) {
+            try {
+                await sendMessage({ toNumber: whatsAppId, message: `Resumiendo el link...`, company });
+
+                let summary = await getTextSummary({
+                    input: article.text,
+                    lang: article.language,
+                    tokens: 1000,
+                    overlap: 250,
+                });
+                aiNewMessage = summary;
+            } catch (e) {
+                aiNewMessage = 'No se pudo resumir el artículo.';
+            }
+        } else {
+            aiNewMessage = 'No se pudo resumir el link.';
+        }
+    }
     storeNewMessages.push({
         sessionId: activeSession.id,
         role: 'assistant',
@@ -478,30 +510,5 @@ async function sendMessage({ toNumber, message, company }) {
         let response = await axios.post(url, data, { headers });
     } catch (e) {
         console.log(`This is the error ${e}`);
-    }
-}
-
-async function getAIMessage({ messages, model = 'gpt-3.5-turbo', temperature = 0 }) {
-    try {
-        const newMessage = await openai.createChatCompletion({
-            model: model,
-            messages: messages,
-            temperature,
-        });
-
-        if (newMessage) {
-            let useMessage = '';
-            newMessage.data.choices.forEach((choice) => {
-                let role = choice.message.role;
-                let message = choice.message.content;
-                if (role == 'assistant') {
-                    useMessage = message;
-                }
-            });
-            return useMessage;
-        }
-    } catch (e) {
-        console.error('Error getting AI message', e);
-        return 'Ha ocurrido un error generando la respuesta. Intenta de nuevo.';
     }
 }

@@ -16,7 +16,7 @@ import urlUtils from '../utils/urlUtils';
 // getData();
 
 async function main() {
-    let inputMessage = `Puedes darme un resumen de esto? https://www.elcomercio.com/actualidad/negocios/ecuador-registra-mas-influencers-sri-buscara-tributen.html`;
+    let inputMessage = `Puedes darme un resumen de esto? https://twitter.com/rachel_l_woods/status/1654274717845716992`;
     let url = urlUtils.getUrlsFromString(inputMessage)[0];
 
     // let url =

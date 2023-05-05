@@ -196,10 +196,10 @@ async function start({ company, whatsAppId, inputMessage, timestamp }) {
     // }
 
     if (inputMessage === '!reset') {
-        await usePrisma.message.updateMany({
-            where: { role: 'user', session: { userId: user.id, isActive: true } },
-            data: { content: 'DELETED' },
-        });
+        // await usePrisma.message.updateMany({
+        //     where: { role: 'user', session: { userId: user.id, isActive: true } },
+        //     data: { content: 'DELETED' },
+        // });
         await usePrisma.session.updateMany({ where: { userId: user.id, isActive: true }, data: { isActive: false } });
 
         await sendMessage({ toNumber: whatsAppId, message: systemMessages.RESTART_CONV[useLanguage], company });
@@ -217,10 +217,10 @@ async function start({ company, whatsAppId, inputMessage, timestamp }) {
               Math.round(new Date(activeSession.lastActiveAt).getTime() / 1000)
             : 0;
     if (secondsSinceLastActive > 60 * 15) {
-        await usePrisma.message.updateMany({
-            where: { role: 'user', session: { userId: user.id, isActive: true } },
-            data: { content: 'DELETED' },
-        });
+        // await usePrisma.message.updateMany({
+        //     where: { role: 'user', session: { userId: user.id, isActive: true } },
+        //     data: { content: 'DELETED' },
+        // });
         await usePrisma.session.update({ where: { id: activeSession.id }, data: { isActive: false } });
         await sendMessage({
             toNumber: whatsAppId,

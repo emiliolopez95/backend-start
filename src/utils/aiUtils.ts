@@ -48,12 +48,13 @@ export const getTextSummary = async (props: {
     let pages = stringSplitter(input, tokens, overlap);
 
     let jsonFormat = `Respond in this format ((use the "${lang}" language for your response)): { "summary": "" // 2-3 sentence summary, "keyPoints": [""] //key points, "counterArguments": ""//counter arguments }`;
-    let stringFormat = `'Respond in this format ((use the "${lang}" language for your response)): Summary: <2-3 sentence summary> \n\n Key Points: <key points> \n\n Counter Arguments: <counter arguments>'`;
+    let stringFormat = `'Respond in this format ((use the "${lang}" language for your response)): Summary: <2-3 sentence summary> \n\n Key Points: < 2 - 4 key points> \n\n Counter Arguments: <2- 4 counter arguments>'`;
 
     let useFormat = stringFormat;
 
     let pagesArray = [];
-    for (let i = 0; i < pages.length; i++) {
+    let maxLength = pages.length <= 3 ? pages.length : 3;
+    for (let i = 0; i < maxLength; i++) {
         let page = pages[i];
         let messages = [
             {

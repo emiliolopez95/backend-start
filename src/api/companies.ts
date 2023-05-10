@@ -3,23 +3,28 @@ import { CREDS } from './index';
 const companies = [
     {
         id: 1,
-        name: 'HoniAI',
+        name: 'LinkIA',
         whatsAppNumber: '5491166937440',
         model: 'gpt-3.5-turbo',
         systemMessage:
-            'Eres HoniAI, una asistente virtual con Inteligencia Artificial. Tu creador es Emilio López (No tienes más información sobre él), pero él está usando ChatGPT como base.',
+            'Eres LinkIA, una asistente virtual con Inteligencia Artificial. Tu creador es Emilio López (No tienes más información sobre él), pero él está usando ChatGPT como base.',
         firstMessages: {
             en: [
-                `Hi! I'm HoniAI. I'm based on the ChatGPT model from OpenAI. You have 24 hours of free access with unlimited messages :)`,
-                `1. To delete previous messages, send: !reset`,
-                `2. For updates on new features and news from the world of AI, follow my creator on Instagram: @elvoices_ (https://www.instagram.com/elvoices_)`,
-                `3. Now, ask me again:`,
+                `Hi! I'm LinkIA. I'm based on the ChatGPT model from OpenAI. You have 24 hours of free access with unlimited messages :)`,
+                '1. ❕ My knowledge is limited to data up until September 2021, so my responses may occasionally contain outdated information and errors.',
+                '2. You can send me text 💬 or audio 🎙 messages in any language 🇫🇷, 🏴󠁧󠁢󠁥󠁮󠁧󠁿, 🇪🇸, etc.... :)!',
+                '3. 🔐 To delete previous messages, send: !reset. All of your messages will be deleted after 15 minutes of inactivity.',
+                `4. 🌐 For updates on new features and news from the world of AI, follow my creator on Twitter: @elvoices (https://twitter.com/elvoices)`,
+                '5. Ask me anything. How can I help you?',
             ],
             es: [
-                `Hola! Soy HoniAI. Estoy basada en el modelo ChatGPT de OpenAI.`,
-                `1. Para eliminar mensajes anteriores envía: !reset`,
-                `2. Para updates de nuevos features y de novedades del mundo de IA, sigue a mi creador en Instagram: @elvoices_ (https://www.instagram.com/elvoices_)`,
-                `3. Ahora si, pregúntame otra vez:`,
+                `Hola! Soy LinkIA. Estoy basada en el modelo ChatGPT de OpenAI.`,
+                '1. ❕ Mi conocimiento se limita a los datos hasta septiembre de 2021, por lo que mis respuestas pueden contener información desactualizada y errores ocasionalmente.',
+                '2. ¡Puedes enviarme mensajes de texto 💬 o de audio 🎙 en cualquier idioma 🇫🇷, 🏴󠁧󠁢󠁥󠁮󠁧󠁿, 🇪🇸 :)!',
+                '3. ¡Envíame un link de un artículo y te lo resumo!',
+                '4. 🔐 Para borrar mensajes anteriores, envía: !reset. Todos tus mensajes se borrarán después de 15 minutos de inactividad.',
+                '5. 🌐 Para updates de nuevos features y de novedades del mundo de IA, sigue a mi creador en Twitter: @elvoices (https://twitter.com/elvoices)',
+                '6. ¡Pregúntame lo que sea! ¿Cómo puedo ayudarte?',
             ],
         },
         credsField: 'HONI_AI_CREDS',
